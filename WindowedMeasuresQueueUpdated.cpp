@@ -1,4 +1,5 @@
 
+
 #include <deque>
 #include <iostream>
 
@@ -14,22 +15,20 @@ void calcWindowMeasureswithQueue(int arr[], int temp[], int window, int n) {
               The dequeue structure works - if the current element is greater
      than holder.back() then we pop it otherwise insert it at back.
 
-     NOTE: We add index of element in the deque so that comparison can be made about the size of window and when was the last max element found.
+     NOTE: We add index of element in the deque so that comparison can be made
+     about the size of window and when was the last max element found.
   */
 
   holder.push_back(0);
   for (int i = 1; i < window; i++) {
 
     for (it = holder.end(); it != holder.begin(); --it) {
-      if (arr[i] > arr[holder.back()] && !holder.empty())
-      {
-            if(holder.back() == holder.front())
-            {
-                holder.push_front(i);
-            }
-            holder.pop_back();
-      }
-      else {
+      if (arr[i] > arr[holder.back()] && !holder.empty()) {
+        if (holder.back() == holder.front()) {
+          holder.push_front(i);
+        }
+        holder.pop_back();
+      } else {
         holder.push_back(i);
         break;
       }
@@ -44,10 +43,15 @@ void calcWindowMeasureswithQueue(int arr[], int temp[], int window, int n) {
      of the window of the element being scanned then we remove it (window has
      shifted ahead than max element calculated).
 
-     3. If the element currently being scanned is greater than element pointed by (k-1)th index in output array (Name:temp)
-        we pop all the elements from the deque that are lesser than presently scanned element and add that element to output array (Name:temp)
-        otherwise, we add the element at the front of deque to output array. If the element that is scanned is greater than element present at front of deque
-        we add the current element to output(The notion behind this is that element present in front of deque is max element found during current window, if it's lesser than present element this measure is taken).
+     3. If the element currently being scanned is greater than element pointed
+     by (k-1)th index in output array (Name:temp) we pop all the elements from
+     the deque that are lesser than presently scanned element and add that
+     element to output array (Name:temp) otherwise, we add the element at the
+     front of deque to output array. If the element that is scanned is greater
+     than element present at front of deque we add the current element to
+     output(The notion behind this is that element present in front of deque is
+     max element found during current window, if it's lesser than present
+     element this measure is taken).
   */
 
   k = window - 1;
@@ -66,41 +70,31 @@ void calcWindowMeasureswithQueue(int arr[], int temp[], int window, int n) {
         break;
     }
 
-    if (arr[i] > temp[k-1])
-    {
-        for (it = holder.end(); it != holder.begin(); --it) {
-         if (arr[i] > arr[holder.back()] && !holder.empty())
-         {
+    if (arr[i] > temp[k - 1]) {
+      for (it = holder.end(); it != holder.begin(); --it) {
+        if (arr[i] > arr[holder.back()] && !holder.empty()) {
 
-            if(holder.back() == holder.front())
-            {
-                holder.push_front(i);
-            }
-            holder.pop_back();
+          if (holder.back() == holder.front()) {
+            holder.push_front(i);
+          }
+          holder.pop_back();
+        } else {
+          holder.push_back(i);
+          break;
         }
-        else
-            {
-                holder.push_back(i);
-                break;
-            }
-    }
+      }
 
-    temp[k] = arr[i];
+      temp[k] = arr[i];
 
-    }
-    else if (arr[i] < arr[holder.front()])
-    {
-        temp[k] = arr[holder.front()];
-        holder.push_back(i);
-    }
-    else
-    {
-        temp[k] = arr[i];
-        holder.push_back(i);
+    } else if (arr[i] < arr[holder.front()]) {
+      temp[k] = arr[holder.front()];
+      holder.push_back(i);
+    } else {
+      temp[k] = arr[i];
+      holder.push_back(i);
     }
 
     k++;
-
   }
 
   for (int i = window - 1; i < n; i++) {
